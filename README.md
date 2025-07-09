@@ -1,194 +1,123 @@
--- Xoá GUI cũ
-pcall(function() game.CoreGui:FindFirstChild("DreamHub"):Destroy() end)
+-- Xoá GUI & Blur nếu có
+pcall(function() game.CoreGui:FindFirstChild("MeMaybeoKeyUI"):Destroy() end)
+pcall(function() game.Lighting:FindFirstChild("MeMaybeoBlur"):Destroy() end)
 
--- Services
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UIS = game:GetService("UserInputService")
-local lp = Players.LocalPlayer
+local cg = game:GetService("CoreGui")
+local Lighting = game:GetService("Lighting")
 
--- GUI chính
-local gui = Instance.new("ScreenGui", game.CoreGui)
-gui.Name = "DreamHub"
-gui.ResetOnSpawn = false
+-- Blur nền
+local blur = Instance.new("BlurEffect", Lighting)
+blur.Name = "MeMaybeoBlur"
+blur.Size = 10
+
+-- GUI
+local gui = Instance.new("ScreenGui", cg)
+gui.Name = "MeMaybeoKeyUI"
 gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+gui.ResetOnSpawn = false
 
--- Toggle GUI
-local toggleBtn = Instance.new("ImageButton", gui)
-toggleBtn.Size = UDim2.new(0, 60, 0, 60)
-toggleBtn.Position = UDim2.new(0, 10, 0.5, -30)
-toggleBtn.Image = "rbxassetid://10002032288"
-toggleBtn.BackgroundTransparency = 1
-toggleBtn.Draggable = true
-
--- Frame chính
+-- Khung chính
 local main = Instance.new("Frame", gui)
-main.Size = UDim2.new(0, 240, 0, 300)
-main.Position = UDim2.new(0, 80, 0.5, -150)
-main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-main.Visible = false
-main.Active = true
-main.Draggable = true
+main.Size = UDim2.new(0, 460, 0, 260)
+main.Position = UDim2.new(0.5, -230, 0.5, -130)
+main.BackgroundColor3 = Color3.fromRGB(240, 240, 255) -- Nền trắng nhạt
+main.BackgroundTransparency = 0
+main.BorderSizePixel = 0
+Instance.new("UICorner", main).CornerRadius = UDim.new(0, 8)
 
-toggleBtn.MouseButton1Click:Connect(function()
-	main.Visible = not main.Visible
-end)
+-- Logo
+local logo = Instance.new("ImageLabel", main)
+logo.Image = "rbxassetid://9387351497"
+logo.Size = UDim2.new(0, 32, 0, 32)
+logo.Position = UDim2.new(0, 20, 0, 10)
+logo.BackgroundTransparency = 1
 
 -- Tiêu đề
 local title = Instance.new("TextLabel", main)
-title.Size = UDim2.new(1, 0, 0, 30)
-title.Text = "DreamHub | By Sung a Lo"
-title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-title.Font = Enum.Font.Arcade
-title.TextScaled = true
-title.TextColor3 = Color3.new(1, 1, 1)
+title.Text = "MeMaybeo Hub Key System"
+title.Size = UDim2.new(1, -120, 0, 32)
+title.Position = UDim2.new(0, 60, 0, 10)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(40, 40, 80)
+title.Font = Enum.Font.GothamBold
+title.TextSize = 20
+title.TextXAlignment = Enum.TextXAlignment.Left
 
--- Tạo toggle item
-local yOffset = 35
-local function createToggle(name, callback)
-	local container = Instance.new("Frame", main)
-	container.Size = UDim2.new(1, -10, 0, 40)
-	container.Position = UDim2.new(0, 5, 0, yOffset)
-	container.BackgroundTransparency = 1
+-- Subtitle
+local subtitle = Instance.new("TextLabel", main)
+subtitle.Text = "Get Key (Linkvertise ONLY IN DISCORD)"
+subtitle.Size = UDim2.new(1, -40, 0, 25)
+subtitle.Position = UDim2.new(0, 20, 0, 50)
+subtitle.BackgroundTransparency = 1
+subtitle.TextColor3 = Color3.fromRGB(90, 90, 120)
+subtitle.Font = Enum.Font.Gotham
+subtitle.TextSize = 15
+subtitle.TextXAlignment = Enum.TextXAlignment.Left
 
-	local label = Instance.new("TextLabel", container)
-	label.Text = name
-	label.Font = Enum.Font.Arcade
-	label.TextScaled = true
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.Size = UDim2.new(0.75, 0, 1, 0)
-	label.BackgroundTransparency = 1
+-- Nhập key
+local input = Instance.new("TextBox", main)
+input.Size = UDim2.new(1, -40, 0, 40)
+input.Position = UDim2.new(0, 20, 0, 90)
+input.PlaceholderText = "Enter your key..."
+input.Text = ""
+input.Font = Enum.Font.Gotham
+input.TextSize = 16
+input.TextColor3 = Color3.new(0, 0, 0)
+input.PlaceholderColor3 = Color3.fromRGB(150, 150, 150)
+input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Instance.new("UICorner", input).CornerRadius = UDim.new(0, 6)
 
-	local toggle = Instance.new("TextButton", container)
-	toggle.Size = UDim2.new(0, 30, 0, 30)
-	toggle.Position = UDim2.new(1, -35, 0.5, -15)
-	toggle.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-	toggle.Text = ""
-	toggle.AutoButtonColor = false
-	toggle.BorderSizePixel = 0
-	toggle.AnchorPoint = Vector2.new(0, 0.5)
-	local uicorner = Instance.new("UICorner", toggle)
-	uicorner.CornerRadius = UDim.new(1, 0)
+-- Nút check key
+local checkBtn = Instance.new("TextButton", main)
+checkBtn.Size = UDim2.new(1, -40, 0, 35)
+checkBtn.Position = UDim2.new(0, 20, 0, 140)
+checkBtn.Text = "Check Key"
+checkBtn.Font = Enum.Font.GothamBold
+checkBtn.TextSize = 16
+checkBtn.TextColor3 = Color3.new(1, 1, 1)
+checkBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 200)
+Instance.new("UICorner", checkBtn).CornerRadius = UDim.new(0, 6)
 
-	local active = false
-	toggle.MouseButton1Click:Connect(function()
-		active = not active
-		toggle.BackgroundColor3 = active and Color3.fromRGB(0, 200, 100) or Color3.fromRGB(100, 100, 100)
-		callback(active)
-	end)
+-- Xử lý nhập key
+checkBtn.MouseButton1Click:Connect(function()
+	if input.Text == "Dr123" then
+		checkBtn.Text = "✅ Correct! Loading..."
 
-	yOffset = yOffset + 45
-end
+		-- Thông báo thành công
+		local notify = Instance.new("Frame", gui)
+		notify.Size = UDim2.new(0, 300, 0, 50)
+		notify.Position = UDim2.new(0.5, -150, 1, -60)
+		notify.BackgroundColor3 = Color3.fromRGB(30, 255, 120)
+		notify.BackgroundTransparency = 0.15
+		Instance.new("UICorner", notify).CornerRadius = UDim.new(0, 8)
 
--- Noclip
-local noclipConn
-createToggle("Noclip", function(state)
-	if state then
-		noclipConn = RunService.Stepped:Connect(function()
-			if lp.Character then
-				for _, part in pairs(lp.Character:GetDescendants()) do
-					if part:IsA("BasePart") then
-						part.CanCollide = false
-					end
-				end
-			end
-		end)
-	elseif noclipConn then
-		noclipConn:Disconnect()
-	end
-end)
+		local icon = Instance.new("ImageLabel", notify)
+		icon.Image = "rbxassetid://87017226532045"
+		icon.Size = UDim2.new(0, 32, 0, 32)
+		icon.Position = UDim2.new(0, 10, 0.5, -16)
+		icon.BackgroundTransparency = 1
 
--- Infinite Jump
-local infConn
-createToggle("Infinite Jump", function(state)
-	if state then
-		infConn = UIS.JumpRequest:Connect(function()
-			local char = lp.Character
-			if char and char:FindFirstChild("HumanoidRootPart") then
-				char.HumanoidRootPart.Velocity = Vector3.new(0, 50, 0)
-			end
-		end)
-	elseif infConn then
-		infConn:Disconnect()
-	end
-end)
+		local label = Instance.new("TextLabel", notify)
+		label.Text = "Executed Successfully!"
+		label.Size = UDim2.new(1, -50, 1, 0)
+		label.Position = UDim2.new(0, 50, 0, 0)
+		label.TextColor3 = Color3.new(1, 1, 1)
+		label.Font = Enum.Font.GothamBold
+		label.TextSize = 16
+		label.BackgroundTransparency = 1
+		label.TextXAlignment = Enum.TextXAlignment.Left
 
--- Float
-local floatConn
-local floatForce
-createToggle("Float", function(state)
-	if state then
-		local hrp = lp.Character and lp.Character:FindFirstChild("HumanoidRootPart")
-		if hrp then
-			floatForce = Instance.new("BodyVelocity", hrp)
-			floatForce.Velocity = Vector3.new(0, 100, 0)
-			floatForce.MaxForce = Vector3.new(0, math.huge, 0)
-			floatConn = RunService.RenderStepped:Connect(function()
-				hrp.CFrame = hrp.CFrame * CFrame.Angles(0, math.rad(3), 0)
-			end)
-		end
-	else
-		if floatConn then floatConn:Disconnect() end
-		if floatForce then floatForce:Destroy() end
-	end
-end)
+		task.delay(3, function()
+			notify:Destroy()
+			gui:Destroy()
+			blur:Destroy()
 
--- Check Brainrot
-local restoreParts = {}
-createToggle("Check Brainrot", function(state)
-	for _, v in pairs(workspace:GetDescendants()) do
-		if (v:IsA("BasePart") or v:IsA("UnionOperation") or v:IsA("MeshPart"))
-		and not v:IsDescendantOf(lp.Character) then
-			if state then
-				restoreParts[v] = {v.LocalTransparencyModifier, v.Material}
-				v.LocalTransparencyModifier = 0.65
-				v.Material = Enum.Material.SmoothPlastic
-			elseif restoreParts[v] then
-				v.LocalTransparencyModifier = restoreParts[v][1]
-				v.Material = restoreParts[v][2]
-			end
-		end
-	end
-	if not state then restoreParts = {} end
-end)
-
--- BOOST kéo được
-local boostFrame = Instance.new("Frame", gui)
-boostFrame.Size = UDim2.new(0, 130, 0, 45)
-boostFrame.Position = UDim2.new(0.5, -65, 0.6, 0)
-boostFrame.BackgroundTransparency = 1
-boostFrame.Active = true
-boostFrame.Draggable = true
-
-local boostBtn = Instance.new("TextButton", boostFrame)
-boostBtn.Size = UDim2.new(1, 0, 1, 0)
-boostBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-boostBtn.Font = Enum.Font.Arcade
-boostBtn.TextSize = 22
-boostBtn.TextColor3 = Color3.new(1, 1, 1)
-boostBtn.Text = "BOOST"
-boostBtn.ZIndex = 10
-
-local boostOn = false
-local boostConn
-boostBtn.MouseButton1Click:Connect(function()
-	boostOn = not boostOn
-	if boostOn then
-		boostBtn.Text = "BOOST ✅"
-		boostBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
-		boostConn = RunService.RenderStepped:Connect(function()
-			local char = lp.Character
-			if char and char:FindFirstChild("HumanoidRootPart") then
-				local hum = char:FindFirstChild("Humanoid")
-				local hrp = char:FindFirstChild("HumanoidRootPart")
-				if hum.MoveDirection.Magnitude > 0 then
-					hrp.Velocity = hum.MoveDirection * 60 + Vector3.new(0, hrp.Velocity.Y, 0)
-				end
-			end
+			-- Chạy script chính
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/cac02j1/Script/main/README.md"))()
 		end)
 	else
-		boostBtn.Text = "BOOST"
-		boostBtn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-		if boostConn then boostConn:Disconnect() end
+		checkBtn.Text = "❌ Wrong Key!"
+		wait(1.2)
+		checkBtn.Text = "Check Key"
 	end
 end)
